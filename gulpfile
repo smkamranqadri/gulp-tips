@@ -1,0 +1,21 @@
+//alternative solution to the gulp-typescript plugin...
+
+var gulp  = require('gulp');
+var watch = require('gulp-watch');
+var shell = require('gulp-shell');
+
+gulp.task('default',['watchsource']);
+
+gulp.task('transpile', function () {
+  return gulp.src('src/**/*.ts').pipe(shell('tsc "<%= file.path %>"'));
+});
+
+gulp.task('watchsource',['transpile'], function () {
+  watch('src/**/*.ts').pipe(shell('tsc "<%= file.path %>"'));
+});
+
+gulp.task('build',['transpile'], function(){
+  gulp.src('src/**/*.html').pipe(gulp.dest('build/'));
+  gulp.src('src/**/*.js').pipe(gulp.dest('build/'));
+  gulp.src('src/**/*.png').pipe(gulp.dest('build/'));
+});
